@@ -100,16 +100,16 @@ ul.navig li a:hover, .active{
 
 .help-block{
     text-transform: none;
-    display: inline;
-}
-.colors .help-block
-{
     display: inline-block;
+}
+.payment .help-block
+{
+    display: inline;
 }
 
 #order_travelerDoBMonth, #order_travelerDoBYear, #order_paymentOptionExpiryMonth, #order_paymentOptionExpiryYear{
     display: inline-block;
-    max-width: 90px;
+    max-width: 130px;
     vertical-align: top;
 }
 

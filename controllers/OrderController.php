@@ -36,7 +36,7 @@ class OrderController extends Controller
                         $traveler->Address = $model->travelerAddress;
                         $traveler->DoB = $model->travelerDoBMonth.'-'.$model->travelerDoBYear;
                         $traveler->Email = $model->travelerEmail;
-                        $traveler->PersonCount = substr_count($model->travelerPersonNames, ',')+1;
+                        $traveler->PersonCount = substr_count($model->travelerPersonNames, '(');
                         $traveler->PersonNames = $model->travelerPersonNames;
                         $traveler->save();
                         
@@ -82,6 +82,14 @@ class OrderController extends Controller
                             $orderModel->Status = 5;
                             
                             $transaction->commit();
+
+                            $model->sendNotification(
+                                    "newOrderConfirmation", 
+//                                    "order@anniebananies.com", 
+                                    "hornllp@gmail.com",                                     
+                                    \Yii::$app->params['sitename'].' - New Order confirmation', 
+                                    $model);
+
                             return "success";
                         }
                     }

@@ -38,6 +38,7 @@ use app\helpers\HtmlHelper;
             echo $form->field($model, 'travelerEmail')->textInput(['placeholder'=>'example@email.com'])->label('Enter eMail Address');
             ?>
         </div>
+        <br />
         <div class="deliver-ad" id="order_travelerPersonNames">
             <h4>If You Checked Family, Add Family Names Below</h4>
             <?php

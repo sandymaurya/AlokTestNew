@@ -83,8 +83,7 @@ class OrderModel extends Model
         else if(!$creditCardValidator->validateDate($this->paymentOptionExpiryMonth, $this->paymentOptionExpiryYear))
             $this->addError('paymentOptionExpiryYear', 'Invalid expiry date.');
         else
-            $creditCardValidator->validateAttribute(@$this, "paymentOptionCardNumber");
-        
+            $creditCardValidator->validateAttribute(@$this, "paymentOptionCardNumber");        
     }
 
     /**
@@ -103,18 +102,6 @@ class OrderModel extends Model
             ->send();
     }
     
-    public function sendNotification($template, $to, $subject, $data, $from="")
-    {
-        $mail = \Yii::$app->mailer->compose($template, ['data' => $data]);
-        if(!$from)
-            $mail->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot']);
-        else
-            $mail->setFrom ($from);
-            $mail->setTo($to);
-        $mail->setSubject($subject);
-        $mail->send();
-    }
-
     public function getTimeList()
     {
         return [
@@ -249,5 +236,17 @@ class OrderModel extends Model
             return ['status' => 'error', 'message' => $error];
         else
             return ['status' => 'success', 'charge' => $charge];
+    }
+    
+    public function sendNotification($template, $to, $subject, $data, $from="")
+    {
+        $mail = \Yii::$app->mailer->compose($template, ['data' => $data]);
+        if(!$from)
+            $mail->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot']);
+        else
+            $mail->setFrom ($from);
+            $mail->setTo($to);
+        $mail->setSubject($subject);
+        $mail->send();
     }
 }

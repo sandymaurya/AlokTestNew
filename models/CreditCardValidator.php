@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Inspired from http://www.yiiframework.com/extension/eccvalidator/
  *
@@ -14,8 +13,8 @@ use yii\base\InvalidValueException;
 use yii\validators\Validator;
 use Yii;
 
-class CreditCardValidator extends Validator {
-
+class CreditCardValidator extends Validator
+{
     /**
      *
      * Detected Credit Card list
@@ -56,6 +55,7 @@ class CreditCardValidator extends Validator {
         self::LASER => '/^(?:6304|6706|6771|6709)\\d{12}(\\d{2,3})?$/',
         self::ALL => '/^(5[1-5][0-9]{14}|4[0-9]{12}([0-9]{3})?|3[47][0-9]{13}|3(0[0-5]|[68][0-9])[0-9]{11}|(6011\d{12}|65\d{14})|(3[0-9]{4}|2131|1800)[0-9]{11}|2(?:014|149)\\d{11}|8699[0-9]{11}|(6334[5-9][0-9]|6767[0-9]{2})\\d{10}(\\d{2,3})?|(?:5020|6\\d{3})\\d{12}|56(10\\d\\d|022[1-5])\\d{10}|(?:49(03(0[2-9]|3[5-9])|11(0[1-2]|7[4-9]|8[1-2])|36[0-9]{2})\\d{10}(\\d{2,3})?)|(?:564182\\d{10}(\\d{2,3})?)|(6(3(33[0-4][0-9])|759[0-9]{2})\\d{10}(\\d{2,3})?)|(?:417500|4026\\d{2}|4917\\d{2}|4913\\d{2}|4508\\d{2}|4844\\d{2})\\d{10}|(?:417500|4026\\d{2}|4917\\d{2}|4913\\d{2}|4508\\d{2}|4844\\d{2})\\d{10})$/'
     );
+
     public $messageFormat;
 
     /**
@@ -64,25 +64,27 @@ class CreditCardValidator extends Validator {
      */
     public $format = self::ALL;
 
-    public function init() {
+    public function init()
+    {
         if ($this->message === null) {
             $this->message = Yii::t('yii', '{attribute} is not a valid Credit Card number.');
         }
         if ($this->messageFormat === null) {
             $this->messageFormat = Yii::t('yii', 'The "format" property must be specified with a supported Credit Card format.');
         }
-
+        
         $this->format = $this->format;
     }
 
     /**
      * @inheritdoc
      */
-    public function validateAttribute($object, $attribute) {
+    public function validateAttribute($object, $attribute)
+    {
         $value = $object->$attribute;
 
         $result = $this->validateValue($object->$attribute);
-
+                
         if (!empty($result)) {
             $this->addError($object, $attribute, $result[0], $result[1]);
         }
@@ -91,7 +93,8 @@ class CreditCardValidator extends Validator {
     /**
      * @inheritdoc
      */
-    protected function validateValue($value) {
+    protected function validateValue($value)
+    {
         if (!$this->checkType()) {
             return [$this->messageFormat, []];
         }
@@ -108,20 +111,18 @@ class CreditCardValidator extends Validator {
      * @param $creditCardExpiredYear
      * @return bool
      */
-    public function validateDate($creditCardExpiredMonth, $creditCardExpiredYear) {
-        die($creditCardExpiredMonth.','. $creditCardExpiredYear);
+    public function validateDate($creditCardExpiredMonth, $creditCardExpiredYear)
+    {
         $currentYear = intval(date('Y'));
         $currentMonth = intval(date('m'));
         
-        if (is_scalar($creditCardExpiredMonth))
-            $creditCardExpiredMonth = intval($creditCardExpiredMonth);
-        if (is_scalar($creditCardExpiredYear))
-            $creditCardExpiredYear = intval($creditCardExpiredYear);
+        if (is_scalar($creditCardExpiredMonth)) $creditCardExpiredMonth = intval($creditCardExpiredMonth);
+        if (is_scalar($creditCardExpiredYear)) $creditCardExpiredYear = intval($creditCardExpiredYear);
 
-        return is_integer($creditCardExpiredMonth) && $creditCardExpiredMonth >= 1 && $creditCardExpiredMonth <= 12 &&
-                is_integer($creditCardExpiredYear) && $creditCardExpiredYear < $currentYear + 10  && 
-                $creditCardExpiredYear >= $currentYear  &&
-                 ($creditCardExpiredMonth >= $currentMonth && $creditCardExpiredYear == $currentYear );
+        return is_integer($creditCardExpiredMonth) && ($creditCardExpiredMonth >= 1 && $creditCardExpiredMonth <= 12 &&
+        is_integer(
+            $creditCardExpiredYear
+        ) && $creditCardExpiredYear >= $currentYear && $creditCardExpiredYear < $currentYear + 10) && ($creditCardExpiredMonth >= $currentMonth && $creditCardExpiredYear == $currentYear);
     }
 
     /**
@@ -130,7 +131,8 @@ class CreditCardValidator extends Validator {
      * @param $creditCardHolder
      * @return bool
      */
-    public function validateName($creditCardHolder) {
+    public function validateName($creditCardHolder)
+    {
         return !empty($creditCardHolder) && preg_match('/[A-Za-z ]/', $creditCardHolder);
     }
 
@@ -143,10 +145,11 @@ class CreditCardValidator extends Validator {
      * @param $creditCardExpiredYear
      * @return bool
      */
-    public function validateAll($creditCardHolder, $creditCardNumber, $creditCardExpiredMonth, $creditCardExpiredYear) {
+    public function validateAll($creditCardHolder, $creditCardNumber, $creditCardExpiredMonth, $creditCardExpiredYear)
+    {
         return $this->validateName($creditCardHolder) && $this->validateValue(
-                        $creditCardNumber
-                ) && $this->validateDate($creditCardExpiredMonth, $creditCardExpiredYear);
+            $creditCardNumber
+        ) && $this->validateDate($creditCardExpiredMonth, $creditCardExpiredYear);
     }
 
     /**
@@ -156,7 +159,8 @@ class CreditCardValidator extends Validator {
      * @param string $cardNumber
      * @return boolean true|false
      */
-    protected function checkFormat($cardNumber) {
+    protected function checkFormat($cardNumber)
+    {
         return preg_match('/^[0-9]+$/', $cardNumber) && preg_match($this->patterns[$this->format], $cardNumber);
     }
 
@@ -167,7 +171,8 @@ class CreditCardValidator extends Validator {
      * @return bool
      * @see http://en.wikipedia.org/wiki/Luhn_algorithm#Mod_10.2B5_Variant
      */
-    protected function mod10($cardNumber) {
+    protected function mod10($cardNumber)
+    {
         $cardNumber = strrev($cardNumber);
         $numSum = 0;
         for ($i = 0; $i < strlen($cardNumber); $i++) {
@@ -193,15 +198,15 @@ class CreditCardValidator extends Validator {
      *
      * @return boolean
      */
-    protected function checkType() {
+    protected function checkType()
+    {
 
         if (is_scalar($this->format)) {
             return array_key_exists($this->format, $this->patterns);
         } else if (is_array($this->format)) {
             $pattern = array();
             foreach ($this->format as $f) {
-                if (!array_key_exists($f, $this->patterns))
-                    return false;
+                if (!array_key_exists($f, $this->patterns)) return false;
                 $pattern[] = substr($this->patterns[$f], 2, strlen($this->patterns[$f]) - 4);
             }
             $this->format = 'custom';
@@ -209,6 +214,6 @@ class CreditCardValidator extends Validator {
             return true;
         }
         return false;
-    }
 
-}
+    }
+} 
