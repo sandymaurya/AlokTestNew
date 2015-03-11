@@ -700,6 +700,9 @@ a.contact-number,a.contact-number:hover{
     color:#fff;
     border:none;
 }
+.modal-open .modal {
+    background: rgba(0,0,0,0.5);
+}
 #loader-content{
     display:block;
 }

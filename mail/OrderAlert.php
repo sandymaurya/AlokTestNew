@@ -32,19 +32,24 @@ use yii\helpers\Html;
         <tr>
             <td style="text-align: right; background:#dddddd; color:#000; padding:3px;">Hotel</td>
             <td style="text-align: left; padding:5px 10px; background:#dddddd; color:#000; font-weight:bold;"> 
-                <?php echo $data->attributes['ticketHotel'] ?>
+                <?php echo app\models\Hotel::findOne(['Code'=>$data->attributes['ticketHotel']])->Name  ?>
             </td>
         </tr>
         <tr>
             <td style="text-align: right; background:#dddddd; color:#000; padding:3px;">Booking Date</td>
             <td style="text-align: left; padding:5px 10px; background:#dddddd; color:#000; font-weight:bold;">
-                <?php echo $data->attributes['bookingDate'] ?>
+                <?php 
+                    $arr = explode('-', $data->attributes['bookingDate']);
+                    $date = new DateTime();
+                    $date->setDate($arr[0],$arr[1],$arr[2]);
+                    echo $date->format('d-M-Y');                
+                ?>
             </td>
         </tr>
         <tr>
             <td style="text-align: right; background:#dddddd; color:#000; padding:3px;">Time</td>
             <td style="text-align: left; padding:5px 10px; background:#dddddd; color:#000; font-weight:bold;">
-                <?php echo $data->attributes['ticketTime'] ?>
+                <?php echo str_replace('pm',' pm', str_replace('am', ' am', $data->attributes['ticketTime']))  ?>
             </td>
         </tr>        
         <tr>
@@ -61,7 +66,7 @@ use yii\helpers\Html;
         <tr>
             <td style="text-align: right; background:#dddddd; color:#000; padding:3px;">Traveler Type</td>
             <td style="text-align: left; padding:5px 10px; background:#dddddd; color:#000; font-weight:bold;">
-                <?php echo $data->attributes['travelerType'] ?>
+                <?php echo \app\models\TravelerType::findOne(['Id'=>$data->attributes['travelerType']])->Type;  ?>
             </td>
         </tr>
         <tr>
@@ -114,7 +119,7 @@ use yii\helpers\Html;
         <tr>
             <td style="text-align: right; background:#dddddd; color:#000; padding:3px;">Status</td>
             <td style="text-align: left; padding:5px 10px; background:#dddddd; color:#000; font-weight:bold;">
-                Payment Confirmed
+                Payment Received
             </td>
         </tr>                
     </tbody>
