@@ -11,7 +11,7 @@ use Yii;
  * @property integer $TicketId
  * @property integer $TravelerId
  * @property integer $PaymentId
- * @property integer $Date
+ * @property string $Date
  * @property string $SpecialNeed
  * @property string $InitialAmount
  * @property string $DiscountedAmount
@@ -41,10 +41,12 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['TicketId', 'TravelerId', 'PaymentId', 'Date', 'InitialAmount', 'DiscountedAmount', 'PromoCode', 'FinalAmount', 'Status'], 'required'],
-            [['TicketId', 'TravelerId', 'PaymentId', 'Date', 'Status'], 'integer'],
-            [['InitialAmount', 'DiscountedAmount', 'PromoCode', 'FinalAmount'], 'number'],
-            [['SpecialNeed'], 'string', 'max' => 2000]
+            [['TicketId', 'TravelerId', 'Date', 'InitialAmount', 'FinalAmount', 'Status'], 'required'],
+            [['TicketId', 'TravelerId', 'PaymentId', 'Status'], 'integer'],
+            [['Date'], 'safe'],
+            [['InitialAmount', 'DiscountedAmount', 'FinalAmount'], 'number'],
+            [['SpecialNeed'], 'string', 'max' => 2000],
+            [['PromoCode'], 'string', 'max' => 100]
         ];
     }
 

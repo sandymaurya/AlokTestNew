@@ -28,21 +28,4 @@ class HtmlHelper
 
         return $dropDownOptions;
     }
-//
-//    public static function GetOptionsForMonths($selectedValue)
-//    {
-//        $result = "";
-//        foreach (AppConstant::$monthNames as $name)
-//        {
-//            if (!is_null($selectedValue) and $selectedValue ==$name)
-//            {
-//                $result += '<option selected="selected">' . $name . "</option>\n";
-//            }
-//            else
-//            {
-//                $result += "<option>" . $name . "</option>\n";
-//            }
-//        }
-//        return $result;
-//    }
 } 

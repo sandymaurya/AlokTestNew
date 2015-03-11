@@ -4,12 +4,18 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use app\models\CardType;
+use app\models\Hotel;
+use app\models\PaymentStatusType;
+use app\models\OrderStatusType;
+use app\models\TravelerType;
+
+use app\enums\TravelerTypeEnum;
 
 /**
  * ContactForm is the model behind the contact form.
  */
-class OrderModel extends Model
-{
+class OrderModel extends Model {    
     public $ticketTime;
     public $ticketHotel;
     public $ticketQuantity;
@@ -32,58 +38,70 @@ class OrderModel extends Model
     public $paymentOptionExpiryMonth;
     public $paymentOptionExpiryYear;
     public $paymentOptionCVV;
-    
     public $amount;
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             // START: STEP 1 //
-            [['ticketTime', 'ticketHotel', 'ticketQuantity'], 'required', "on" => ['step1','step2','step3','step4']],
+            [['ticketTime', 'ticketHotel', 'ticketQuantity'], 'required', "on" => ['step1', 'step2', 'step3', 'step4']],
             // END: STEP 1 //
-
             // START: STEP 2 //
-            [['bookingDate'], 'required', 'on' =>  ['step2','step3','step4']],
-            [['bookingDate'], "date", 'format' => 'php:Y-m-d', 'message' => 'Invalid booking date.', 'on' => ['step2','step3','step4']],
+            [['bookingDate'], 'required', 'on' => ['step2', 'step3', 'step4']],
+            [['bookingDate'], "date", 'format' => 'php:Y-m-d', 'message' => 'Invalid booking date.', 'on' => ['step2', 'step3', 'step4']],
+            [['bookingDate'], "checkMinDate", 'on' => ['step2', 'step3', 'step4']],
             // END: STEP 2 //
-
             // START: STEP 3 //
-            [['travelerType', 'travelerName', 'travelerAddress', 'travelerEmail'], 'required', 'message' => 'This field cannot be empty.', 'on' => ['step3','step4']],
+            [['travelerType', 'travelerName', 'travelerAddress', 'travelerEmail'], 'required', 'message' => 'This field cannot be empty.', 'on' => ['step3', 'step4']],
             [['travelerPersonNames'], 'required', 'when' => function ($model) {
-                return $model->travelerType == $model->getTravelerTypeList()['Family'];
-            }, 'message' => 'Names cannot be empty.' , 'on' => ['step3','step4'] ],
-            [['travelerDoBMonth'], 'required', 'message' => "Select Month.",'on' => ['step3','step4']],
-            [['travelerDoBYear'], 'required', 'message' => "Select Year.", 'on' => ['step3','step4']],
-            [['travelerEmail'], 'email', 'message' => 'Email address is not valid.', 'on' => ['step3','step4']],
-            [['travelerName'], 'match', 'pattern' => '/[A-Za-z .]{2,100}$/', 'on' => ['step3','step4']],
+            return $model->travelerType == TravelerTypeEnum::FAMILY;            
+        }, 'message' => 'Names cannot be empty.', 'on' => ['step3', 'step4']],
+            [['travelerDoBMonth'], 'required', 'message' => "Select Month.", 'on' => ['step3', 'step4']],
+            [['travelerDoBYear'], 'required', 'message' => "Select Year.", 'on' => ['step3', 'step4']],
+            [['travelerEmail'], 'email', 'message' => 'Email address is not valid.', 'on' => ['step3', 'step4']],
+            [['travelerName'], 'match', 'pattern' => '/[A-Za-z .]{2,100}$/', 'on' => ['step3', 'step4']],
             // END: STEP 3 //
-
             // START: STEP 4 //
-            [['paymentOptionCardType', 'paymentOptionCardHolderName', 'paymentOptionCardNumber', 'paymentOptionCVV'], 'required',  'message'=>'This field cannot be empty.','on' => 'step4'],
-            ['paymentOptionCardNumber', 'validateCreditCard', 'message' => 'Invalid credit card number.','on' => ['step4']],
-            [['paymentOptionExpiryMonth'], 'required','message'=>'Select Month.', 'on' => 'step4'],
-            [['paymentOptionExpiryYear'], 'required','message'=>'Select Year.', 'on' => 'step4'],
-            // END: STEP 4 //
+            [['paymentOptionCardType', 'paymentOptionCardHolderName', 'paymentOptionCardNumber', 'paymentOptionCVV'], 'required', 'message' => 'This field cannot be empty.', 'on' => 'step4'],
+            ['paymentOptionCardNumber', 'validateCreditCard', 'message' => 'Invalid credit card number.', 'on' => ['step4']],
+            [['paymentOptionExpiryMonth'], 'required', 'message' => 'Select Month.', 'on' => 'step4'],
+            [['paymentOptionExpiryYear'], 'required', 'message' => 'Select Year.', 'on' => 'step4'],
+                // END: STEP 4 //
         ];
     }
-    
-    public function validateCreditCard($attribute, $params)
-    {
+
+    public function validateCreditCard($attribute, $params) {
         $cardFormat = $this->paymentOptionCardType;
-        
+
         $creditCardValidator = new CreditCardValidator(['message' => "Invalid credit card number.", 'messageFormat' => 'Invalid credit card type.']);
-        
+
         $creditCardValidator->format = $cardFormat;
-        
-        if(!$creditCardValidator->validateName($this->paymentOptionCardHolderName))
+
+        if (!$creditCardValidator->validateName($this->paymentOptionCardHolderName))
             $this->addError('paymentOptionCardHolderName', 'Invalid card holder name.');
-        else if(!$creditCardValidator->validateDate($this->paymentOptionExpiryMonth, $this->paymentOptionExpiryYear))
+        else if (!$creditCardValidator->validateDate($this->paymentOptionExpiryMonth, $this->paymentOptionExpiryYear))
             $this->addError('paymentOptionExpiryYear', 'Invalid expiry date.');
         else
-            $creditCardValidator->validateAttribute(@$this, "paymentOptionCardNumber");        
+            $creditCardValidator->validateAttribute(@$this, "paymentOptionCardNumber");
+    }
+
+    public function checkMinDate($attribute, $params) 
+    {   
+        $y = intval(date('Y'));
+        $m = intval(date('m'));
+        $d = intval(date('d'));
+        
+        $arr = explode('-', $this -> $attribute);
+        $ay = intval($arr[0]);
+        $am = intval($arr[1]);
+        $ad = intval($arr[2]);
+        
+        if($ay<$y || ($ay==$y && $am < $m) || ($ay==$y && $am == $m && $ad <= $d))
+        {
+            $this->addError($attribute, 'Please select a future date.');
+        }
     }
 
     /**
@@ -92,18 +110,16 @@ class OrderModel extends Model
      * @param  string $email the target email address
      * @return boolean whether the email was sent
      */
-    public function sendEmail($email)
-    {
+    public function sendEmail($email) {
         return Yii::$app->mailer->compose()
-            ->setTo($email)
-            ->setFrom([$this->email => $this->name])
-            ->setSubject($this->subject)
-            ->setTextBody($this->body)
-            ->send();
+                        ->setTo($email)
+                        ->setFrom([$this->email => $this->name])
+                        ->setSubject($this->subject)
+                        ->setTextBody($this->body)
+                        ->send();
     }
-    
-    public function getTimeList()
-    {
+
+    public function getTimeList() {
         return [
             '09am' => '09 a.m.',
             '11am' => '11 a.m.',
@@ -111,26 +127,17 @@ class OrderModel extends Model
             '03pm' => '03 p.m.'
         ];
     }
-
-
-    public function getHotelsList()
-    {
-        return [
-            "AX" => "Outrigger",
-            "AF" => "Marriott",
-            "AL" => "Hilton Hawaiian",
-            "DZ" => "St. Regis",
-            "AS" => "Four Seasons",
-            "AD" => "Ritz Carlton",
-            "AO" => "Auqua Hotels",
-            "AI" => "Shearton",
-            "AQ" => "Double Tree",
-            "AQ" => "Other Hotel"
-        ];
+    
+    public function getHotelsList() {
+        $entities = Hotel::find()->all();        
+        foreach($entities as $entity)
+        {
+            $arr[$entity->Code] = $entity->Name;
+        }        
+        return $arr;
     }
 
-    public function getSlider2Images()
-    {
+    public function getSlider2Images() {
         return [
             [
                 'url' => '/mm-images/downloaded/pawn-stars-tours.png',
@@ -150,34 +157,32 @@ class OrderModel extends Model
         ];
     }
 
-    public function getTravelerTypeList()
-    {
-        return [
-            'Adult' => 'Adult',
-            'Child' => 'Child',
-            'Family' => 'Family'
-        ];
+    public function getTravelerTypeList() {
+        $entities = TravelerType::find()->all();        
+        foreach($entities as $entity)
+        {
+            $arr[$entity->Id] = $entity->Type;
+        }        
+        return $arr;        
     }
 
-    public function getPaymentOptionCardTypeList()
-    {
-        return [
-            "Visa" => "Visa",
-            "Mastercard" => "MC",
-            "American_Express" => "Amex"
-        ];
+    public function getPaymentOptionCardTypeList() {
+        $entities = CardType::find()->all();        
+        foreach($entities as $entity)
+        {
+            $arr[$entity->Type] = $entity->Name;
+        }        
+        return $arr;        
     }
 
-    public function getMonthNames()
-    {
-        return array_combine(range(1,12), ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"]);
+    public function getMonthNames() {
+        return array_combine(range(1, 12), ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"]);
     }
-    
+
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'ticketTime' => 'Time',
             'ticketHotel' => 'Hotel',
@@ -203,7 +208,7 @@ class OrderModel extends Model
             'paymentOptionCVV' => 'CVV',
         ];
     }
-    
+
     public function processPayment() {
         $stripeKey = Yii::$app->params['stripeKey'];
         $error = "";
@@ -211,42 +216,42 @@ class OrderModel extends Model
 
         \Stripe\Stripe::setApiKey($stripeKey['api']);
         $myCard = [
-                'number' => $this->paymentOptionCardNumber,
-                'exp_month' => $this->paymentOptionExpiryMonth,
-                'exp_year' => $this->paymentOptionExpiryYear,
-                'name' => $this->travelerName,
-                'address_line1' => $this->travelerAddress
-            ];
+            'number' => $this->paymentOptionCardNumber,
+            'exp_month' => $this->paymentOptionExpiryMonth,
+            'exp_year' => $this->paymentOptionExpiryYear,
+            'name' => $this->travelerName,
+            'address_line1' => $this->travelerAddress
+        ];
         try {
             $charge = \Stripe\Charge::create(array('card' => $myCard, 'amount' => '9900', 'currency' => 'usd'));
         } catch (\Stripe\Error\ApiConnection $e) {
             $error = $e->getMessage();
-        // Network problem, perhaps try again.
+            // Network problem, perhaps try again.
         } catch (\Stripe\Error\InvalidRequest $e) {
             $error = $e->getMessage();
             // You screwed up in your programming. Shouldn't happen!
         } catch (\Stripe\Error\Api $e) {
             $error = $e->getMessage();
-        // Stripe's servers are down!
+            // Stripe's servers are down!
         } catch (\Stripe\Error\Card $e) {
             $error = $e->getMessage();
-        // Card was declined.
+            // Card was declined.
         }
-        if($error)
+        if ($error)
             return ['status' => 'error', 'message' => $error];
         else
             return ['status' => 'success', 'charge' => $charge];
     }
-    
-    public function sendNotification($template, $to, $subject, $data, $from="")
-    {
+
+    public function sendNotification($template, $to, $subject, $data, $from = "") {
         $mail = \Yii::$app->mailer->compose($template, ['data' => $data]);
-        if(!$from)
+        if (!$from)
             $mail->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot']);
         else
-            $mail->setFrom ($from);
-            $mail->setTo($to);
+            $mail->setFrom($from);
+        $mail->setTo($to);
         $mail->setSubject($subject);
         $mail->send();
     }
+
 }

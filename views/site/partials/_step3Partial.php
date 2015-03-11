@@ -38,6 +38,7 @@ use app\helpers\HtmlHelper;
             echo $form->field($model, 'travelerEmail')->textInput(['placeholder'=>'example@email.com'])->label('Enter eMail Address');
             ?>
         </div>
+        <div class="clearfix"></div>        
         <br />
         <div class="deliver-ad" id="order_travelerPersonNames">
             <h4>If You Checked Family, Add Family Names Below</h4>
@@ -45,7 +46,8 @@ use app\helpers\HtmlHelper;
             echo $form->field($model, 'travelerPersonNames',['template'=>"{input}\n{error}"])->textarea(['placeholder'=>'Name1, Name2, Child Name1']);
             ?>
         </div>
-        <div class="cleafix"></div>
+        <div class="clearfix"></div>
+        
         <div class="step-f">
             <button class="btn btn-danger btn-lg pull-left" type="button" role="tab" aria-controls="tab_item-1">< Back</button>
             <button id="step3-submit" type="submit" name="submitOrderForm" value="Step3">Step 4</button>

@@ -688,10 +688,10 @@ a.callbacks_nav.callbacks1_nav.next:hover {
     padding-right:15px;
 }
 #order-info tr td:last-child{
-    text-align:left;
+    /*text-align:left;*/
     color:#fff;        
 }
-#order-info tr:last-child td{
+#order-info tr.order-detail-total{
     border-top:1px dashed #fff;
     border-bottom:1px dashed #fff;
 }
@@ -699,6 +699,9 @@ a.contact-number,a.contact-number:hover{
     background:#f00;
     color:#fff;
     border:none;
+}
+#loader-content{
+    display:block;
 }
 a.callbacks2_s1{
     background:#FF0000;

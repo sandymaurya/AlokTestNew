@@ -1,6 +1,8 @@
 <?php
-    use yii\widgets\ActiveForm;
-    use ruskid\stripe\StripeCheckout;
+
+use yii\widgets\ActiveForm;
+use ruskid\stripe\StripeCheckout;
+use yii\bootstrap\Modal;
 ?>
 <div class="col-md-8 buy-g-col">
     <!--Tabs -->
@@ -19,19 +21,36 @@
                     <span>Step 4: Payment</span>
                 </li>
                 <div class="clearfix"></div>
-            </ul>
-
-            <?php $form = ActiveForm::begin([
-                'id' => 'frmBookTicket',
-                'action' => 'order/process'
-            ]); ?>
-            <div class="resp-tabs-container">
-                <?php echo $this->render('_step1Partial', ['model' => $model, 'form'=>$form]); ?>
-                <?php echo $this->render('_step2Partial', ['model' => $model, 'form'=>$form]); ?>
-                <?php echo $this->render('_step3Partial', ['model' => $model, 'form'=>$form]); ?>
-                <?php echo $this->render('_step4Partial', ['model' => $model, 'form'=>$form]); ?>
+            </ul>            
+            <?php
+            $form = ActiveForm::begin([
+                        'id' => 'frmBookTicket',
+                        'action' => 'order/process'
+            ]);
+            ?>
+            <div class="resp-tabs-container">                
+                <?php echo $this->render('_step1Partial', ['model' => $model, 'form' => $form]); ?>
+                <?php echo $this->render('_step2Partial', ['model' => $model, 'form' => $form]); ?>
+                <?php echo $this->render('_step3Partial', ['model' => $model, 'form' => $form]); ?>
+                <?php echo $this->render('_step4Partial', ['model' => $model, 'form' => $form]); ?>
             </div>
         </div>
         <?php ActiveForm::end(); ?>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="loader-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+                    
+                    <div class="modal-body">
+                        <span id="loader-content">                            
+                        </span>                        
+                        <button id="close-loader" type="button" class="btn btn-danger btn-sm pull-right" data-dismiss="modal">Close</button>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

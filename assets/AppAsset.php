@@ -24,6 +24,7 @@ class AppAsset extends AssetBundle
         'http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900',
     ];
     public $js = [
+        'mm-js/bootstrap.min.js',
         'mm-js/jquery.easydropdown.js',
         'mm-js/easing.js',
         'mm-js/easyResponsiveTabs.js',

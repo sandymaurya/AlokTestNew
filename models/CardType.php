@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace app\models;
 
 use Yii;
 
@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "cardtype".
  *
  * @property integer $Id
+ * @property string $Name
  * @property string $Type
  *
  * @property Carddetail[] $carddetails
@@ -28,8 +29,8 @@ class CardType extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Type'], 'required'],
-            [['Type'], 'string', 'max' => 20]
+            [['Name', 'Type'], 'required'],
+            [['Name', 'Type'], 'string', 'max' => 20]
         ];
     }
 
@@ -40,6 +41,7 @@ class CardType extends \yii\db\ActiveRecord
     {
         return [
             'Id' => 'ID',
+            'Name' => 'Name',
             'Type' => 'Type',
         ];
     }

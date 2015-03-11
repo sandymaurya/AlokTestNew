@@ -28,18 +28,42 @@ $this->title = "Title";
                         </tr>
                         <tr>
                             <td>
-                                <strong><span>Price</span></strong>    
+                                <strong><span>Ticket Price</span></strong>    
                             </td>
-                            <td>
+                            <td class="text-right">
                                 <strong><span>$99</span></strong>    
                             </td>
                         </tr>
                         <tr>
                             <td>
+                                <strong><span>Quantity</span></strong>    
+                            </td>
+                            <td class="text-right">
+                                <strong><span id="quantity-value">1</span></strong>    
+                            </td>
+                        </tr>
+                        <tr class="order-detail-total">
+                            <td>
+                                <strong><span>Net</span></strong>    
+                            </td>
+                            <td class="text-right">
+                                <strong><span id="net-price">$99</span></strong>    
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong><span>Promo Discount</span></strong>    
+                            </td>
+                            <td class="text-right">
+                                <strong><span>$0</span></strong>    
+                            </td>
+                        </tr>
+                        <tr class="order-detail-total">
+                            <td>
                                 <strong><span>Total</span></strong>    
                             </td>
-                            <td>
-                                <strong><span>$99</span></strong>    
+                            <td class="text-right">
+                                <strong><span id="total-price">$99</span></strong>    
                             </td>
                         </tr>
                     </table>                    

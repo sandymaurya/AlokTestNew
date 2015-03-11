@@ -120,9 +120,9 @@ class CreditCardValidator extends Validator
         if (is_scalar($creditCardExpiredYear)) $creditCardExpiredYear = intval($creditCardExpiredYear);
 
         return is_integer($creditCardExpiredMonth) && ($creditCardExpiredMonth >= 1 && $creditCardExpiredMonth <= 12 &&
-        is_integer(
-            $creditCardExpiredYear
-        ) && $creditCardExpiredYear >= $currentYear && $creditCardExpiredYear < $currentYear + 10) && ($creditCardExpiredMonth >= $currentMonth && $creditCardExpiredYear == $currentYear);
+        is_integer($creditCardExpiredYear) && $creditCardExpiredYear < $currentYear + 10) 
+        &&(($creditCardExpiredMonth >= $currentMonth && $creditCardExpiredYear >= $currentYear ) || 
+      ($creditCardExpiredMonth < $currentMonth && $creditCardExpiredYear > $currentYear));
     }
 
     /**
