@@ -1,17 +1,17 @@
 $(document).ready(function () {
-        
-       $('#order_travelerPersonNames').hide();
-       
-    $('#ordermodel-ticketquantity').change(function(){
+
+    $('#order_travelerPersonNames').hide();
+
+    $('#ordermodel-ticketquantity').change(function () {
         var v = $(this).val();
         $('#quantity-value').html(v);
-        $('#total-price').html('$'+ v*99);
-        $('#net-price').html('$'+ v*99);
+        $('#total-price').html('$' + v * 99);
+        $('#net-price').html('$' + v * 99);
     });
-    
-    $('input[type=radio][name="OrderModel[travelerType]"]').change(function(){
+
+    $('input[type=radio][name="OrderModel[travelerType]"]').change(function () {
         var v = $('input[name="OrderModel[travelerType]"]:checked').val();
-        if(v==="3")
+        if (v === "3")
         {
             $('#order_travelerPersonNames').show();
         }
@@ -20,16 +20,18 @@ $(document).ready(function () {
             $('#order_travelerPersonNames').hide();
         }
     });
-    
-    
-    
+
+
+
     var step1SubmitSelector = '#step1-submit';
     var step2SubmitSelector = '#step2-submit';
     var step3SubmitSelector = '#step3-submit';
     var step4SubmitSelector = '#step4-submit';
 
     //var url = "?r=order/process";
-    var url = "/order/process";
+    var pathIndex = window.location.pathname.indexOf('/web/');
+    var relativePath = pathIndex > -1 ? window.location.pathname.substring(0, pathIndex + 5) : '/';
+    var url = window.location.origin + relativePath + "order/process";
 
     $(step1SubmitSelector).click(function (e) {
         postOrderForm("step1", "moveTab2");
@@ -44,9 +46,9 @@ $(document).ready(function () {
             $("#ordermodel-bookingday").val(),
         ];
         $("#ordermodel-bookingdate").val(bookingDate.join("-"));
-        
+
         postOrderForm("step2", "moveTab3");
-        
+
         return false;
     });
 
@@ -77,16 +79,16 @@ $(document).ready(function () {
             else
             {
                 if (data == 'success') {
-                    confirmPayment();                    
+                    confirmPayment();
                 }
             }
-        }).error(function (data) {            
-            if (data.status ==422)
+        }).error(function (data) {
+            if (data.status == 422)
             {
                 var errorResponse = $.parseJSON(data.responseText);
                 $.each(errorResponse, function (index, val) {
                     $("#order_" + index).addClass("has-error");
-                    $("#order_" + index + " .help-block").text(val[0]);                    
+                    $("#order_" + index + " .help-block").text(val[0]);
                 });
                 hideLoader();
             }
@@ -100,7 +102,7 @@ $(document).ready(function () {
     function showLoader(step)
     {
         $('#close-loader').hide();
-        
+
         $('#loader-modal').modal({
             backdrop: false,
             keyboard: false,
@@ -132,7 +134,7 @@ $(document).ready(function () {
     {
         $('#loader-content').addClass('text-success');
         $('#loader-content').html("Success: We have received your order successfully.");
-        $('#close-loader').show();        
+        $('#close-loader').show();
     }
 
     $('#close-loader').click(function () {

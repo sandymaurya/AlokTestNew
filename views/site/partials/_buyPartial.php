@@ -37,7 +37,7 @@ use yii\bootstrap\Modal;
             <?php ActiveForm::end(); ?>
         </div>        
         <a class="etrust-order" href="https://etrust.mobi" data-toggle="popover" data-trigger="hover" data-content="https://etrust.mobi" data-placement="top">
-            <img src="mm-images/bpjl.png" width="200px"/>
+            <img src="/mm-images/bpjl.png" width="200px"/>
         </a>
         <!-- Modal -->
         <div class="modal fade" id="loader-modal" tabindex="-1" role="dialog" aria-hidden="true">

@@ -3,7 +3,7 @@
     <div class="container">
         <div class="logo">
             <a class="etrust-order" href="https://etrust.mobi" data-toggle="popover" data-trigger="hover" data-content="https://etrust.mobi">
-                <img src="mm-images/downloaded/bopo.png"/>
+                <img src="/mm-images/downloaded/bopo.png"/>
             </a>    
         </div>
 

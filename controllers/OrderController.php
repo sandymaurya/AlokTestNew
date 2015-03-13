@@ -94,16 +94,17 @@ class OrderController extends Controller {
 
                             $model->sendNotification(
                                     "OrderAlert",                                    
-                                    $app->params['salesEmail'],
-//                                    "hornllp@gmail.com",
+                                    \Yii::$app->params['salesEmail'],
                                     \Yii::$app->params['sitename'] . ' - New Order Alert', 
-                                    $model);
+                                    $model,
+                                    \Yii::$app->params['sitename'] . ' - New Order Alert');
                                                         
                             $model->sendNotification(
                                     "OrderConfirmation",
                                     $model->travelerEmail, 
-                                    \Yii::$app->params['sitename'] . ' - Order confirmation', 
-                                    $model);
+                                    \Yii::$app->params['sitename'] . ' - Order confirmation',
+                                    $model,
+                                    \Yii::$app->params['sitename'] . ' - Order confirmation');
 
                             return "success";
                         }
