@@ -5,7 +5,7 @@ use ruskid\stripe\StripeCheckout;
 use yii\bootstrap\Modal;
 ?>
 <div class="col-md-8 buy-g-col">
-    <!--Tabs -->
+    <!--Tabs -->   
     <div class="sap_tabs">
         <div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
             <ul class="resp-tabs-list">
@@ -34,9 +34,11 @@ use yii\bootstrap\Modal;
                 <?php echo $this->render('_step3Partial', ['model' => $model, 'form' => $form]); ?>
                 <?php echo $this->render('_step4Partial', ['model' => $model, 'form' => $form]); ?>
             </div>
-        </div>
-        <?php ActiveForm::end(); ?>
-        
+            <?php ActiveForm::end(); ?>
+        </div>        
+        <a class="etrust-order" href="https://etrust.mobi" data-toggle="popover" data-trigger="hover" data-content="https://etrust.mobi" data-placement="top">
+            <img src="mm-images/bpjl.png" width="200px"/>
+        </a>
         <!-- Modal -->
         <div class="modal fade" id="loader-modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-sm">

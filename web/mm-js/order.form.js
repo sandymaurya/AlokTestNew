@@ -80,25 +80,19 @@ $(document).ready(function () {
                     confirmPayment();                    
                 }
             }
-        }).error(function (data) {
-            var isValidationError = false;
-            if (!(data.responseText.indexOf("<pre>") == 0))
+        }).error(function (data) {            
+            if (data.status ==422)
             {
                 var errorResponse = $.parseJSON(data.responseText);
                 $.each(errorResponse, function (index, val) {
                     $("#order_" + index).addClass("has-error");
-                    $("#order_" + index + " .help-block").text(val[0]);
-                    isValidationError = true;
+                    $("#order_" + index + " .help-block").text(val[0]);                    
                 });
-            }
-
-            if (!isValidationError)
-            {
-                orderProcessingError();
+                hideLoader();
             }
             else
             {
-                hideLoader();
+                orderProcessingError();
             }
         });
     }

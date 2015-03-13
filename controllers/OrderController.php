@@ -93,21 +93,16 @@ class OrderController extends Controller {
                             $transaction->commit();
 
                             $model->sendNotification(
-                                    "OrderAlert",
-                                    "msg2sandeepk@gmail.com", 
+                                    "OrderAlert",                                    
+                                    $app->params['salesEmail'],
+//                                    "hornllp@gmail.com",
                                     \Yii::$app->params['sitename'] . ' - New Order Alert', 
                                     $model);
-                            
-//                            $model->sendNotification(
-//                                    "OrderAlert",
-//                                    "hornllp@gmail.com",
-//                                    \Yii::$app->params['sitename'] . ' - New Order Alert', 
-//                                    $model);
-                            
+                                                        
                             $model->sendNotification(
                                     "OrderConfirmation",
                                     $model->travelerEmail, 
-                                    \Yii::$app->params['sitename'] . ' - New Order confirmation', 
+                                    \Yii::$app->params['sitename'] . ' - Order confirmation', 
                                     $model);
 
                             return "success";
@@ -123,5 +118,4 @@ class OrderController extends Controller {
         \yii::$app->getResponse()->setStatusCode("422", "Validation Failed.");
         return json_encode($model->getErrors());
     }
-
 }

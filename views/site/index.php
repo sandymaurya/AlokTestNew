@@ -39,10 +39,10 @@ $this->title = "Title";
                                 <strong><span>Quantity</span></strong>    
                             </td>
                             <td class="text-right">
-                                <strong><span id="quantity-value">1</span></strong>    
+                                <strong><span class="pull-left">x</span><span id="quantity-value">1</span></strong>    
                             </td>
                         </tr>
-                        <tr class="order-detail-total">
+                        <tr class="order-detail-net">
                             <td>
                                 <strong><span>Net</span></strong>    
                             </td>
@@ -55,7 +55,7 @@ $this->title = "Title";
                                 <strong><span>Promo Discount</span></strong>    
                             </td>
                             <td class="text-right">
-                                <strong><span>$0</span></strong>    
+                                <strong><span class="pull-left">-</span><span>$0</span></strong>    
                             </td>
                         </tr>
                         <tr class="order-detail-total">

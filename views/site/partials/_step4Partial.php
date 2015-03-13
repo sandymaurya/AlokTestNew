@@ -28,11 +28,14 @@
                 <?= Html::activeDropDownList($model, 'paymentOptionExpiryYear', array_combine(range(date("Y"), date("Y") + 10), range(date("Y"), date("Y") + 10)), HtmlHelper::GetDropDownListOptions('Year', 'year', false));?>
                 <?php echo Html::error($model, 'paymentOptionExpiryYear', ['class' => 'help-block']);?>
             </span>
+            <div style="display: inine-block;" id="order_paymentOptionExpiryDate">
+                <?php echo Html::error($model, 'paymentOptionExpiryYear', ['class' => 'help-block']);?>
+            </div>
         </div>
         <div class="card cardy" id="order_paymentOptionCVV">
             <?= $form->field($model, 'paymentOptionCVV', ['inputOptions' => ["placeholder" => "CVV"]])->label('Enter CVV Number'); ?>            
         </div>
-        <div class="cleafix"></div>
+        <div class="clearfix"></div>
         <br />
         <div class="step-d">
             <button class="btn btn-danger btn-lg" type="button" role="tab" aria-controls="tab_item-2">< Back</button>

@@ -35,6 +35,7 @@ class OrderModel extends Model {
     public $paymentOptionCardType;
     public $paymentOptionCardHolderName;
     public $paymentOptionCardNumber;
+    public $paymentOptionExpiryDate;
     public $paymentOptionExpiryMonth;
     public $paymentOptionExpiryYear;
     public $paymentOptionCVV;
@@ -67,7 +68,7 @@ class OrderModel extends Model {
             [['paymentOptionCardType', 'paymentOptionCardHolderName', 'paymentOptionCardNumber', 'paymentOptionCVV'], 'required', 'message' => 'This field cannot be empty.', 'on' => 'step4'],
             ['paymentOptionCardNumber', 'validateCreditCard', 'message' => 'Invalid credit card number.', 'on' => ['step4']],
             [['paymentOptionExpiryMonth'], 'required', 'message' => 'Select Month.', 'on' => 'step4'],
-            [['paymentOptionExpiryYear'], 'required', 'message' => 'Select Year.', 'on' => 'step4'],
+            [['paymentOptionExpiryYear'], 'required', 'message' => 'Select Year.', 'on' => 'step4'],            
                 // END: STEP 4 //
         ];
     }
@@ -81,10 +82,11 @@ class OrderModel extends Model {
 
         if (!$creditCardValidator->validateName($this->paymentOptionCardHolderName))
             $this->addError('paymentOptionCardHolderName', 'Invalid card holder name.');
-        else if (!$creditCardValidator->validateDate($this->paymentOptionExpiryMonth, $this->paymentOptionExpiryYear))
-            $this->addError('paymentOptionExpiryYear', 'Invalid expiry date.');
-        else
-            $creditCardValidator->validateAttribute(@$this, "paymentOptionCardNumber");
+        
+        if (!$creditCardValidator->validateDate($this->paymentOptionExpiryMonth, $this->paymentOptionExpiryYear))
+            $this->addError('paymentOptionExpiryDate', 'Invalid expiry date.');
+        
+        $creditCardValidator->validateAttribute(@$this, "paymentOptionCardNumber");
     }
 
     public function checkMinDate($attribute, $params) 
@@ -246,7 +248,7 @@ class OrderModel extends Model {
     public function sendNotification($template, $to, $subject, $data, $from = "") {
         $mail = \Yii::$app->mailer->compose($template, ['data' => $data]);
         if (!$from)
-            $mail->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot']);
+            $mail->setFrom([\Yii::$app->params['alertsEmail'] => \Yii::$app->name . ' automatic confirmation']);
         else
             $mail->setFrom($from);
         $mail->setTo($to);

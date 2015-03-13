@@ -10,7 +10,7 @@
             <div class="col-md-5 footer-column">
                 <h3><span style="color:#FF0000"><strong>Contact Us 702-804-9755</strong></span></h3>
 
-                <h3><img alt="" src="https://pcbx.us/bopa.png" style="float:left; height:183px; margin-right:10px; width:183px" /><strong>Live Help</br> Hoover Dam </br>Wedding Chapel</br>Vegas Pawn Stars</strong></h3>
+                <h3><img alt="" src="mm-images/downloaded/bopa.png" style="float:left; height:183px; margin-right:10px; width:183px" /><strong>Live Help</br> Hoover Dam </br>Wedding Chapel</br>Vegas Pawn Stars</strong></h3>
 
 
                 <p>If you have any questions regarding Vegas Tours contact us</p>
@@ -21,12 +21,12 @@
 
                 <p>Email: <a id="email-link" href="mailto:example@email.com">loremipsum@yoursite.com</a></p>
 
-                <p><a href="http://link.com"><img alt="Contact-us" src="https://pcbx.us/bope.png" style="height:59px; width:195px" /></a></p>
+                <p><a href="http://link.com"><img alt="Contact-us" src="mm-images/downloaded/bope.png" style="height:59px; width:195px" /></a></p>
             </div>
             <div class="col-md-4 footer-column">
                 <h3>Safe - Secure & Encrypted</h3>
                 <ul class="social">
-                    <li><a href="http://bbbonline.com"><img alt="" src="https://pcbx.us/bopc.png" style="height:70px; width:300px" /></a></li>
+                    <li><a href="http://bbbonline.com"><img alt="" src="mm-images/downloaded/bopc.png" style="height:70px; width:300px" /></a></li>
 
                 </ul>
             </div>

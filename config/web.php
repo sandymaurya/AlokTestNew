@@ -28,15 +28,17 @@ $config = [
             // for the mailer to send real emails.
             'useFileTransport' => false,
             'transport' => [
-                'class' => 'Swift_SmtpTransport',
-//                'host' => 'mail.anniebananies.com',
-//                'username' => 'orders@anniebananies.com',
-//                'password' => '#Happiness99',
-                'host' => 'smtp.gmail.com',
-                'username' => 'testsk1988@gmail.com',
-                'password' => 'testlogin@123',
-                'port' => '587',
-                'encryption' => 'tls',
+                'class' => 'Swift_SmtpTransport',  
+                'host' => 'localhost',
+                'username' => $app->params['alertsEmail'],
+                'password' => '#Happiness99',
+                'port' => '465',
+                'encryption' => 'ssl',
+//                'host' => 'smtp.gmail.com',
+//                'username' => 'testsk1988@gmail.com',
+//                'password' => 'testlogin@123',
+//                'port' => '587',
+//                'encryption' => 'tls',
             ],
         ],
         'urlManager' => [
@@ -61,6 +63,28 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
+        'assetManager' => [
+            'class' => 'yii\web\AssetManager',
+            'bundles' => [
+                        'yii\web\JqueryAsset' => [
+                            'jsOptions' => ['position' => 1],
+                            'js' => [
+                                YII_ENV_DEV ? 'jquery.js' : 'jquery.min.js'
+                            ]
+                        ],
+                        'yii\bootstrap\BootstrapAsset' => [
+                            'css' => [
+                                YII_ENV_DEV ? 'css/bootstrap.css' :         'css/bootstrap.min.css',
+                            ]
+                        ],
+                        'yii\bootstrap\BootstrapPluginAsset' => [
+                            'js' => [
+                                YII_ENV_DEV ? 'js/bootstrap.js' : 'js/bootstrap.min.js',
+                            ]
+                        ]
+            ],
+        ],
+        //
     ],
     'params' => $params,
 ];

@@ -113,6 +113,11 @@ class CreditCardValidator extends Validator
      */
     public function validateDate($creditCardExpiredMonth, $creditCardExpiredYear)
     {
+        if(empty($creditCardExpiredMonth) || empty($creditCardExpiredYear))
+        {
+            return true;
+        }
+        
         $currentYear = intval(date('Y'));
         $currentMonth = intval(date('m'));
         
