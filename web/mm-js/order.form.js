@@ -4,6 +4,7 @@ $(document).ready(function () {
 
     $('#ordermodel-ticketquantity').change(function () {
         var v = $(this).val();
+        v = v ? v : 0;
         $('#quantity-value').html(v);
         $('#total-price').html('$' + v * 99);
         $('#net-price').html('$' + v * 99);
