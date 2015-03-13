@@ -21,8 +21,7 @@ class AppAsset extends AssetBundle
 //        'css/site.css',
         'mm-css/fonts.css',
         'mm-css/css.css',
-        'mm-css/style.css',
-        'http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900',
+        'mm-css/style.css'        
     ];
     public $js = [        
         'mm-js/jquery.easydropdown.js',
