@@ -19,9 +19,9 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
 //        'css/site.css',
-        'mm-css/fonts.css',
         'mm-css/css.css',
-        'mm-css/style.css'        
+        'mm-css/style.css',
+        'https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900',
     ];
     public $js = [        
         'mm-js/jquery.easydropdown.js',

@@ -34,6 +34,7 @@ $(document).ready(function () {
     var relativePath = pathIndex > -1 ? window.location.pathname.substring(0, pathIndex + 5) : '/';
     var url = window.location.origin + relativePath + "order/process";
 
+
     $(step1SubmitSelector).click(function (e) {
         postOrderForm("step1", "moveTab2");
         return false;
