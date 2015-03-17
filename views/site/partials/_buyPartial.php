@@ -42,9 +42,7 @@ use yii\bootstrap\Modal;
         <!-- Modal -->
         <div class="modal fade" id="loader-modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-
-                    
+                <div class="modal-content">                    
                     <div class="modal-body">
                         <span id="loader-content">                            
                         </span>                        

@@ -3,13 +3,12 @@
     <ul class="rslides" id="slider1">
         <li>
             <div class="features" id="feture">
-                <h3><span
-                        style="color:#FFFFFF">Vegas Pawn Stars Vip Tour - Rated #1 Tour in Las Vegas by Tour Advisor</span>
+                <h3>
+                    <span style="color:#FFFFFF">Vegas Pawn Stars Vip Tour - Rated #1 Tour in Las Vegas by Tour Advisor</span>
                 </h3>
 
-                <div class="features-grid">
+<!--                <div class="features-grid">
                     <h4>helmet compatible hood</h4>
-
                     <p>Fully adjustable, helmet-compatible hood with hidden cord locks and laminated wire brim.</p>
                 </div>
                 <div class="features-grid grid-2">
@@ -35,7 +34,7 @@
                 </div>
                 <div class="fet-but">
                     <a href="http://link.com">Reserve</a>
-                </div>
+                </div>-->
             </div>
         </li>
         <li>
@@ -43,8 +42,7 @@
                 <h3><span
                         style="color:#FFFFFF">Book Now 702-804-9755 - Rated #1 Tour in Las Vegas by Tour Advisor</span>
                 </h3>
-
-                <div class="features-grid">
+<!--                <div class="features-grid">
                     <h4>helmet compatible hood</h4>
 
                     <p>Fully adjustable, helmet-compatible hood with hidden cord locks and laminated wire brim.</p>
@@ -72,7 +70,7 @@
                 </div>
                 <div class="fet-but">
                     <a href="http://link.com">Book Tour Now!</a>
-                </div>
+                </div>-->
             </div>
         </li>
     </ul>

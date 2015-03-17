@@ -2,11 +2,10 @@
 <div class="header">
     <div class="container">
         <div class="logo">
-            <a class="etrust-order" href="https://etrust.mobi" data-toggle="popover" data-trigger="hover" data-content="https://etrust.mobi">
-                <img src="/mm-images/downloaded/bopo.png"/>
-            </a>    
+            <a class="etrust-order" href="/" data-toggle="popover" data-trigger="hover" data-content="https://etrust.mobi">
+                <img src="/mm-images/logo.png"/>
+            </a>
         </div>
-
         <span class="menu"></span>
         <div class="m-clear"></div>
         <div class="navigation">

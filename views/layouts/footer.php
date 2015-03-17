@@ -25,10 +25,9 @@
             </div>
             <div class="col-md-4 footer-column">
                 <h3>Safe - Secure & Encrypted</h3>
-                <ul class="social">
-                    <li><a href="http://bbbonline.com"><img alt="" src="/mm-images/downloaded/bopc.png" style="height:70px; width:300px" /></a></li>
-
-                </ul>
+                <a style="margin-top: 0;" class="etrust-order" href="https://etrust.mobi" data-toggle="popover" data-trigger="hover" data-content="https://etrust.mobi" data-placement="top">
+                    <img src="/mm-images/bpjl.png" width="200px"/>
+                </a>
             </div>
             <div class="clearfix"></div>
 
