@@ -36,7 +36,6 @@
         <div class="clearfix"></div>
 
         <div class="step-f">
-            <?php echo Html::activeHiddenInput($model, 'tourId', ['value' => $tour->Url]); ?>
             <button id="step1-submit" type="submit" name="submitOrderForm" value="Step1">Step 2</button>
             <button class="hide" id="moveTab2" type="button" name="submitOrderForm" value="Step1" role="tab" aria-controls="tab_item-1"></button>
         </div>

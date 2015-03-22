@@ -23,7 +23,7 @@ $this->title = "Title";
                                 <strong><span>Product</span></strong>    
                             </td>
                             <td>
-                                <strong><span>Las Vagas Tour</span></strong>    
+                                <strong><span><?php echo $tour->Name; ?></span></strong>    
                             </td>
                         </tr>
                         <tr>
@@ -31,7 +31,7 @@ $this->title = "Title";
                                 <strong><span>Ticket Price</span></strong>    
                             </td>
                             <td class="text-right">
-                                <strong><span>$99</span></strong>    
+                                <strong><span id="TicketPrice">$<?php echo $tour->Price; ?></span></strong>    
                             </td>
                         </tr>
                         <tr>
@@ -47,7 +47,7 @@ $this->title = "Title";
                                 <strong><span>Net</span></strong>    
                             </td>
                             <td class="text-right">
-                                <strong><span id="net-price">$99</span></strong>    
+                                <strong><span id="net-price">$<?php echo $tour->Price; ?></span></strong>    
                             </td>
                         </tr>
                         <tr>
@@ -63,7 +63,7 @@ $this->title = "Title";
                                 <strong><span>Total</span></strong>    
                             </td>
                             <td class="text-right">
-                                <strong><span id="total-price">$99</span></strong>    
+                                <strong><span id="total-price">$<?php echo $tour->Price; ?></span></strong>    
                             </td>
                         </tr>
                     </table>                    
@@ -89,7 +89,7 @@ $this->title = "Title";
                 <!--Slider 2 Ends Here-->
             </div>
             <?php
-            echo $this->render('partials/_buyPartial', ['model' => $model]);
+            echo $this->render('partials/_buyPartial', ['model' => $model, 'tour' => $tour]);
             ?>
             <!-- Tabs -->
         </div>

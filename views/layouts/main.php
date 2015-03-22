@@ -36,9 +36,9 @@ $this->registerJs($js);
 </head>
 <body>
     <?php $this->beginBody() ?>
-    
+    <?php echo $this->render("header")?>
     <?= $content ?>
-    
+    <?php echo $this->render("footer")?>
     <?php $this->endBody() ?>
 </body>
 </html>

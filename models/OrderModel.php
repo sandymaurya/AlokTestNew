@@ -15,7 +15,8 @@ use app\enums\TravelerTypeEnum;
 /**
  * ContactForm is the model behind the contact form.
  */
-class OrderModel extends Model {    
+class OrderModel extends Model {
+    public $tourId;
     public $ticketTime;
     public $ticketHotel;
     public $ticketQuantity;
@@ -47,7 +48,7 @@ class OrderModel extends Model {
     public function rules() {
         return [
             // START: STEP 1 //
-            [['ticketTime', 'ticketHotel', 'ticketQuantity'], 'required', "on" => ['step1', 'step2', 'step3', 'step4']],
+            [['tourId', 'ticketTime', 'ticketHotel', 'ticketQuantity'], 'required', "on" => ['step1', 'step2', 'step3', 'step4']],
             // END: STEP 1 //
             // START: STEP 2 //
             [['bookingDate'], 'required', 'on' => ['step2', 'step3', 'step4']],

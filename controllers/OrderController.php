@@ -16,9 +16,15 @@ use app\models\Traveler;
 use app\models\TravelerType;
 
 class OrderController extends Controller {
-    
+
     public function actionProcess() {
         $post = Yii::$app->request->post();
+        
+        $tour = $post['tourId'];
+        
+        $tourModel = Tour::findOne(['Url' => $tour]);
+        if(!$tourModel)
+            throw new \yii\web\HttpException(404, "Invalid Request");
 
         $model = new OrderModel(['scenario' => $post['scenario']]);
 
@@ -118,5 +124,48 @@ class OrderController extends Controller {
         }
         \yii::$app->getResponse()->setStatusCode("422", "Validation Failed.");
         return json_encode($model->getErrors());
+    }
+    
+    public function actionCoupon($token) {
+        ini_set('error_reporting', E_ALL);
+        $stripeKey = Yii::$app->params['stripeKey'];
+        $return = "";
+
+        \Stripe\Stripe::setApiKey($stripeKey['api']);
+        
+        try {
+            $return = \Stripe\Coupon::retrieve($token);
+            
+            if($return->redeem_by <= time() || $return->max_redemptions < $return->times_redeemed || !$return->valid) {
+                Yii::$app->getResponse()->setStatusCode(422, "Data validation error");
+                $return = "Expired coupon: $token";
+            }
+            else
+            {
+                $return['id'] = $return->id;
+                $return['percent_off'] = $return->percent_off;
+                $return['amount_off'] = $return->amount_off;
+                $return['valid'] = $return->valid;
+                $return = $return;
+            }
+            
+        } catch (\Stripe\Error\ApiConnection $e) {
+            Yii::$app->getResponse()->setStatusCode(422, "Data validation error");
+            $return = $e->getMessage();
+            // Network problem, perhaps try again.
+        } catch (\Stripe\Error\InvalidRequest $e) {
+            Yii::$app->getResponse()->setStatusCode(422, "Data validation error");
+            $return = $e->getMessage();
+            // You screwed up in your programming. Shouldn't happen!
+        } catch (\Stripe\Error\Api $e) {
+            Yii::$app->getResponse()->setStatusCode(422, "Data validation error");
+            $return = $e->getMessage();
+            // Stripe's servers are down!
+        } catch (\Stripe\Error\Card $e) {
+            Yii::$app->getResponse()->setStatusCode(422, "Data validation error");
+            $return = $e->getMessage();
+            // Card was declined.
+        }
+        return json_encode($return);
     }
 }
