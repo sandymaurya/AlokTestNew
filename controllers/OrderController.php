@@ -129,7 +129,7 @@ class OrderController extends Controller {
     public function actionCoupon($token) {
         ini_set('error_reporting', E_ALL);
         $stripeKey = Yii::$app->params['stripeKey'];
-        $return = "";
+        $return = [];
 
         \Stripe\Stripe::setApiKey($stripeKey['api']);
         
@@ -142,11 +142,12 @@ class OrderController extends Controller {
             }
             else
             {
-                $return['id'] = $return->id;
-                $return['percent_off'] = $return->percent_off;
-                $return['amount_off'] = $return->amount_off;
-                $return['valid'] = $return->valid;
-                $return = $return;
+                $temp = [];
+                $temp['id'] = $return->id;
+                $temp['percent_off'] = $return->percent_off;
+                $temp['amount_off'] = $return->amount_off;
+                $temp['valid'] = $return->valid;
+                $return =$temp;
             }
             
         } catch (\Stripe\Error\ApiConnection $e) {
