@@ -20,15 +20,14 @@ class OrderController extends Controller {
     public function actionProcess() {
         $post = Yii::$app->request->post();
         
-        $tour = $post['tourId'];
-        
-        $tourModel = Tour::findOne(['Url' => $tour]);
-        if(!$tourModel)
-            throw new \yii\web\HttpException(404, "Invalid Request");
-
         $model = new OrderModel(['scenario' => $post['scenario']]);
 
         if ($model->load($post) && $model->validate()) {
+            $tourModel = Tour::findOne(['Url' => $model->tourId]);
+            if(!$tourModel) {
+                throw new \yii\web\HttpException(404, "Invalid Request");
+                return;
+            }
             if ($post['scenario'] == 'step4') {
 
                 if (!$model->hasErrors()) {
