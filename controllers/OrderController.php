@@ -23,7 +23,7 @@ class OrderController extends Controller {
         $model = new OrderModel(['scenario' => $post['scenario']]);
 
         if ($model->load($post) && $model->validate()) {
-            $tourModel = Tour::findOne(['Url' => $model->tourId]);
+            $tourModel = \app\models\Tour::findOne(['Url' => $model->tourId]);
             if(!$tourModel) {
                 throw new \yii\web\HttpException(404, "Invalid Request");
                 return;
