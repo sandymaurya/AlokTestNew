@@ -1,15 +1,14 @@
+var $promoCodeInfo = [];
+
 $(document).ready(function () {
+    refreshPriceSummary();
 
     $('#order_travelerPersonNames').hide();
 
     $('#ordermodel-ticketquantity').change(function () {
-        var v = $(this).val();
-        v = v ? v : 0;
-        $('#quantity-value').html(v);
-        $('#total-price').html('$' + v * 99);
-        $('#net-price').html('$' + v * 99);
+        refreshPriceSummary();
     });
-
+    
     $('input[type=radio][name="OrderModel[travelerType]"]').change(function () {
         var v = $('input[name="OrderModel[travelerType]"]:checked').val();
         if (v === "3")
@@ -36,7 +35,27 @@ $(document).ready(function () {
 
 
     $(step1SubmitSelector).click(function (e) {
-        postOrderForm("step1", "moveTab2");
+        $promoCodeInfo = [];
+        showLoader("step1");
+        $.post("/order/coupon/"+$("input#ordermodel-ticketpromocode").val()).success(function (data) {
+            hideLoader();
+            var response = $.parseJSON(data);
+            $promoCodeInfo = response;
+            refreshPriceSummary();
+            postOrderForm("step1", "moveTab2");
+        }).error(function (data) {
+            var errorResponse = $.parseJSON(data.responseText);
+            hideLoader();
+            if (data.status == 422)
+            {
+                $("#order_ticketPromoCode").addClass("has-error");
+                $("#order_ticketPromoCode .help-block").text(errorResponse);
+            }
+            else
+            {
+                orderProcessingError();
+            }
+        });
         return false;
     });
 
@@ -119,6 +138,27 @@ $(document).ready(function () {
         {
             $('#loader-content').html("We are processing your order, please wait...");
         }
+    }
+    
+    function refreshPriceSummary() {
+        var v = $("#ordermodel-ticketquantity").val();
+        v = v ? v : 0;
+        $('#quantity-value').html(v);
+        var $price = v * parseInt($('#TicketPrice').text().replace("$", ""));
+        $('#net-price').html('$' + $price);
+        
+        if($promoCodeInfo.length > 0) {
+            var $discount = 0;
+            if($promoCodeInfo.amount_off > 0) {
+                $discount = $promoCodeInfo.amount_off;
+            }
+            else if($promoCodeInfo.percent_off > 0) {
+                $discount = ($price * $promoCodeInfo.percent_off / 100);
+            }
+            $price = $price - $discount;
+            $("#TicketPromoDiscount").text("$"+$discount);
+        }
+        $('#total-price').html('$' + $price);
     }
 
     function hideLoader() {
