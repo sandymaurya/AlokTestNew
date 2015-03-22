@@ -55,7 +55,7 @@ $this->title = "Title";
                                 <strong><span>Promo Discount</span></strong>    
                             </td>
                             <td class="text-right">
-                                <strong><span class="pull-left">-</span><span>$0</span></strong>    
+                                <strong><span class="pull-left">-</span><span id="TicketPromoDiscount">$0</span></strong>    
                             </td>
                         </tr>
                         <tr class="order-detail-total">
