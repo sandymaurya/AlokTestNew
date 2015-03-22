@@ -36,26 +36,31 @@ $(document).ready(function () {
 
     $(step1SubmitSelector).click(function (e) {
         $promoCodeInfo = [];
-        showLoader("step1");
-        $.post("/order/coupon/"+$("input#ordermodel-ticketpromocode").val()).success(function (data) {
-            hideLoader();
-            var response = $.parseJSON(data);
-            $promoCodeInfo = response;
-            refreshPriceSummary();
+        if($("input#ordermodel-ticketpromocode").val()) {
+            showLoader("step1");
+            
+            $.post("/order/coupon/"+$("input#ordermodel-ticketpromocode").val()).success(function (data) {
+                hideLoader();
+                var response = $.parseJSON(data);
+                $promoCodeInfo = response;
+                refreshPriceSummary();
+                postOrderForm("step1", "moveTab2");
+            }).error(function (data) {
+                var errorResponse = $.parseJSON(data.responseText);
+                hideLoader();
+                if (data.status == 422)
+                {
+                    $("#order_ticketPromoCode").addClass("has-error");
+                    $("#order_ticketPromoCode .help-block").text(errorResponse);
+                }
+                else
+                {
+                    orderProcessingError();
+                }
+            });
+        }
+        else
             postOrderForm("step1", "moveTab2");
-        }).error(function (data) {
-            var errorResponse = $.parseJSON(data.responseText);
-            hideLoader();
-            if (data.status == 422)
-            {
-                $("#order_ticketPromoCode").addClass("has-error");
-                $("#order_ticketPromoCode .help-block").text(errorResponse);
-            }
-            else
-            {
-                orderProcessingError();
-            }
-        });
         return false;
     });
 
@@ -147,7 +152,7 @@ $(document).ready(function () {
         var $price = v * parseInt($('#TicketPrice').text().replace("$", ""));
         $('#net-price').html('$' + $price);
         
-        if($promoCodeInfo.length > 0) {
+        if($promoCodeInfo) {
             var $discount = 0;
             if($promoCodeInfo.amount_off > 0) {
                 $discount = $promoCodeInfo.amount_off;
