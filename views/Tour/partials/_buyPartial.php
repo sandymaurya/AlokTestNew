@@ -1,5 +1,4 @@
 <?php
-
 use yii\widgets\ActiveForm;
 use ruskid\stripe\StripeCheckout;
 use yii\bootstrap\Modal;
@@ -24,8 +23,8 @@ use yii\bootstrap\Modal;
             </ul>            
             <?php
             $form = ActiveForm::begin([
-                        'id' => 'frmBookTicket',
-                        'action' => 'order/process'
+                'id' => 'frmBookTicket',
+                'action' => 'order/process'
             ]);
             ?>
             <div class="resp-tabs-container">                

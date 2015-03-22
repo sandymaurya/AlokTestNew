@@ -16,7 +16,7 @@ use app\models\Traveler;
 use app\models\TravelerType;
 
 class OrderController extends Controller {
-
+    
     public function actionProcess() {
         $post = Yii::$app->request->post();
 

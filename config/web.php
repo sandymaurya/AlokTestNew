@@ -46,6 +46,7 @@ $config = [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                'tour/<tour>' => 'tour/detail',
                 '<controller>/<action>' => '<controller>/<action>',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
