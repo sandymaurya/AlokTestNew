@@ -47,6 +47,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'tour/<tour>' => 'tour/detail',
+                'order/coupon/<token>' => 'order/coupon',
                 '<controller>/<action>' => '<controller>/<action>',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
