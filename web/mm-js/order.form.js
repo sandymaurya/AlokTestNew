@@ -20,8 +20,10 @@ $(document).ready(function () {
             $('#order_travelerPersonNames').hide();
         }
     });
-
-
+    
+    $("#frmBookTicket").submit(function() {
+        return false;
+    });
 
     var step1SubmitSelector = '#step1-submit';
     var step2SubmitSelector = '#step2-submit';
@@ -51,7 +53,7 @@ $(document).ready(function () {
                 if (data.status == 422)
                 {
                     $("#order_ticketPromoCode").addClass("has-error");
-                    $("#order_ticketPromoCode .help-block").text(errorResponse);
+                    $("#order_ticketPromoCode .help-block").text(errorResponse.error);
                 }
                 else
                 {
