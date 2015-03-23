@@ -24,9 +24,23 @@ class OrderController extends Controller {
 
         if ($model->load($post) && $model->validate()) {
             $tourModel = \app\models\Tour::findOne(['Url' => $model->tourId]);
+            $intialAmount = 0;
+            $finalAmount = 0;
             if(!$tourModel) {
                 throw new \yii\web\HttpException(404, "Invalid Request");
                 return;
+            }
+            else {
+                $initialAmount = $finalAmount = $model->ticketQuantity * $tourModel->Price;
+                $couponDetails = $this->getCoupon($model->ticketPromoCode);
+                if($couponDetails && !isset($couponDetails['error']) && $couponDetails['valid']) {
+                    $discount = 0;
+                    if($couponDetails['finalAmount'])
+                        $discount = ($initialAmount * $couponDetails['finalAmount'] / 100);
+                    else 
+                        $discount = $couponDetails['amount_off'];
+                    $finalAmount = $finalAmount - $discount;
+                }
             }
             if ($post['scenario'] == 'step4') {
 
@@ -66,16 +80,16 @@ class OrderController extends Controller {
                         $order->PaymentId = null;
                         $order->Date = date("Y-m-d H:i:s");
                         $order->SpecialNeed = $model->bookingSpecialNeeds;
-                        $order->InitialAmount = "99";
+                        $order->InitialAmount = $initialAmount;
                         $order->PromoCode = $model->ticketPromoCode;
-                        $order->FinalAmount = "99";
+                        $order->FinalAmount = $finalAmount;
                         $order->Status = 1;
                         $order->save();
 
                         $paymentModel = new \app\models\Payment();
                         $paymentModel->CardDetailId = $cardDetail->Id;
                         $paymentModel->Date = date("Y-m-d H:i:s");
-                        $paymentModel->PaidAmount = "99";
+                        $paymentModel->PaidAmount = $finalAmount;
                         $paymentModel->OrderId = $order->Id;
                         $paymentModel->Status = 1;
                         $paymentModel->save();
@@ -127,6 +141,17 @@ class OrderController extends Controller {
     
     public function actionCoupon($token) {
         ini_set('error_reporting', E_ALL);
+        
+        $return = $this->getCoupon($token);
+        
+        if(isset($return['error']) && $return['error']) {
+            Yii::$app->getResponse()->setStatusCode(422, "Data validation error");
+        }
+        
+        return json_encode($return);
+    }
+    
+    public function getCoupon($token) {
         $stripeKey = Yii::$app->params['stripeKey'];
         $return = [];
 
@@ -136,8 +161,7 @@ class OrderController extends Controller {
             $return = \Stripe\Coupon::retrieve($token);
             
             if($return->redeem_by <= time() || $return->max_redemptions < $return->times_redeemed || !$return->valid) {
-                Yii::$app->getResponse()->setStatusCode(422, "Data validation error");
-                $return = "Expired coupon: $token";
+                $return = ['error' => "Expired coupon: $token"];
             }
             else
             {
@@ -150,22 +174,18 @@ class OrderController extends Controller {
             }
             
         } catch (\Stripe\Error\ApiConnection $e) {
-            Yii::$app->getResponse()->setStatusCode(422, "Data validation error");
-            $return = $e->getMessage();
+            $return = ['error' => $e->getMessage()];
             // Network problem, perhaps try again.
         } catch (\Stripe\Error\InvalidRequest $e) {
-            Yii::$app->getResponse()->setStatusCode(422, "Data validation error");
-            $return = $e->getMessage();
+            $return = ['error' => $e->getMessage()];
             // You screwed up in your programming. Shouldn't happen!
         } catch (\Stripe\Error\Api $e) {
-            Yii::$app->getResponse()->setStatusCode(422, "Data validation error");
-            $return = $e->getMessage();
+            $return = ['error' => $e->getMessage()];
             // Stripe's servers are down!
         } catch (\Stripe\Error\Card $e) {
-            Yii::$app->getResponse()->setStatusCode(422, "Data validation error");
-            $return = $e->getMessage();
+            $return = ['error' => $e->getMessage()];
             // Card was declined.
         }
-        return json_encode($return);
+        return $return;
     }
 }
